@@ -1,0 +1,37 @@
+import os
+from AutoCenteredImageExtractor import process_image
+
+def process_subfolders(input_folder, output_folder, calculate_alpha, alpha_threshold, is_white):
+    # 遍历文件夹中的所有子文件夹
+    for folder_name in os.listdir(input_folder):
+        folder_path = os.path.join(input_folder, folder_name)
+        
+        # 检查是否是子文件夹
+        if os.path.isdir(folder_path):
+            # 创建输出文件夹
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+            output_directory = os.path.join(output_folder, folder_name)
+            if not os.path.exists(output_directory):
+                os.makedirs(output_directory)
+
+            # 遍历子文件夹中的所有PNG文件
+            for file_name in os.listdir(folder_path):
+                if file_name.lower().endswith(".png"):
+                    file_path = os.path.join(folder_path, file_name)
+                    process_image(file_path, output_directory, calculate_alpha, alpha_threshold, is_white)
+
+# 示例用法
+base_path=r"D:\ImageCenter"
+input_folder_path = os.path.join(base_path, "Input")
+output_folder_path = os.path.join(base_path, "Out")
+
+# 控制参数
+calculate_alpha = False  # 是否计算 alpha 通道
+alpha_threshold = 100  # 当计算 alpha 通道时，alpha 值的阈值
+is_white = True  # 是否判断白色
+
+# 调用处理子文件夹的函数
+process_subfolders(input_folder_path, output_folder_path, calculate_alpha, alpha_threshold, is_white)
+
+print("处理完成！")
